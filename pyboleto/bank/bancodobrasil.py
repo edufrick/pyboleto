@@ -27,7 +27,7 @@ class BoletoBB(BoletoData):
     agencia_cedente = custom_property('agencia_cedente', 4)
     conta_cedente = custom_property('conta_cedente', 8)
 
-    def __init__(self, format_convenio, format_nnumero):
+    def __init__(self, format_convenio=7, format_nnumero=None):
         '''
             Construtor para boleto do Banco deo Brasil
 
