@@ -97,7 +97,7 @@ class BoletoBB(BoletoData):
             self.agencia_cedente,
             self.modulo11(self.agencia_cedente),
             self.conta_cedente[:-1],
-            self.conta_cedente[1-:]
+            self.conta_cedente[-1:]
         )
 
     @property
