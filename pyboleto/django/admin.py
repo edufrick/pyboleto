@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import io
 from datetime import date
-from StringIO import StringIO
 
 from django.contrib import admin
 from django.http import HttpResponse
 
-from ..pdf import BoletoPDF
-from .models import Boleto
+from pyboleto.django.models import Boleto
+from pyboleto.pdf import BoletoPDF
 
 
 def print_boletos(modeladmin, request, queryset):
 
-    buffer = StringIO()
+    buffer = io.BytesIO()
     boleto_pdf = BoletoPDF(buffer)
 
     for b in queryset:

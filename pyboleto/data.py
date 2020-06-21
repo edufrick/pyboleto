@@ -15,6 +15,8 @@ from __future__ import absolute_import
 import datetime
 from decimal import Decimal
 
+import six
+
 
 class BoletoException(Exception):
     """ Exceções para erros no pyboleto"""
@@ -195,11 +197,11 @@ class BoletoData(object):
         """
 
         for attr, length, data_type in [
-            ("codigo_banco", 3, basestring),
-            ("moeda", 1, basestring),
+            ("codigo_banco", 3, six.string_types),
+            ("moeda", 1, six.string_types),
             ("data_vencimento", None, datetime.date),
-            ("valor_documento", -1, basestring),
-            ("campo_livre", 25, basestring),
+            ("valor_documento", -1, six.string_types),
+            ("campo_livre", 25, six.string_types),
         ]:
             value = getattr(self, attr)
             if not isinstance(value, data_type):
@@ -213,7 +215,7 @@ class BoletoData(object):
                         type(value).__name__,
                     )
                 )
-            if data_type == basestring and length != -1 and len(value) != length:
+            if data_type == six.string_types and length != -1 and len(value) != length:
                 raise ValueError(
                     "%s.%s must have a length of %d, not %r (len: %d)"
                     % (self.__class__.__name__, attr, length, value, len(value))
@@ -355,7 +357,7 @@ class BoletoData(object):
         return self._instrucoes
 
     def _instrucoes_set(self, list_inst):
-        if isinstance(list_inst, basestring):
+        if isinstance(list_inst, six.string_types):
             list_inst = list_inst.splitlines()
 
         if len(list_inst) > 7:
@@ -380,7 +382,7 @@ class BoletoData(object):
         return self._demonstrativo
 
     def _demonstrativo_set(self, list_dem):
-        if isinstance(list_dem, basestring):
+        if isinstance(list_dem, six.string_types):
             list_dem = list_dem.splitlines()
 
         if len(list_dem) > 12:
@@ -471,7 +473,7 @@ class BoletoData(object):
 
     @staticmethod
     def modulo10(num):
-        if not isinstance(num, basestring):
+        if not isinstance(num, six.string_types):
             raise TypeError
         soma = 0
         peso = 2
@@ -496,7 +498,7 @@ class BoletoData(object):
 
     @staticmethod
     def modulo11(num, base=9, r=0):
-        if not isinstance(num, basestring):
+        if not isinstance(num, six.string_types):
             raise TypeError
         soma = 0
         fator = 2

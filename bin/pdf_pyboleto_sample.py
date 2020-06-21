@@ -1,6 +1,7 @@
 #!/Users/dudus/Work/pyboleto/venv/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
+from __future__ import print_function
 
 import datetime
 
@@ -250,31 +251,28 @@ def print_itau():
 
 
 def print_all():
-    print "Pyboleto version: %s" % pyboleto.__version__
-    print "----------------------------------"
-    print "     Printing Example Boletos     "
-    print "----------------------------------"
+    print("Pyboleto version: %s" % pyboleto.__version__)
+    print("----------------------------------")
+    print("     Printing Example Boletos     ")
+    print("----------------------------------")
 
-    print "Banco do Brasil"
+    print("Banco do Brasil")
     print_bb()
 
-    print "Bradesco"
+    print("Bradesco")
     print_bradesco()
 
-    # print "Itau"
-    # print_itau()
-
-    print "Caixa"
+    print("Caixa")
     print_caixa()
 
-    print "Real"
+    print("Real")
     print_real()
 
-    print "Santander"
+    print("Santander")
     print_santander()
 
-    print "----------------------------------"
-    print "Ok"
+    print("----------------------------------")
+    print("Ok")
 
 
 if __name__ == "__main__":
