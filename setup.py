@@ -47,7 +47,7 @@ setup(
     author_email="eduardocereto@gmail.com",
     url="https://github.com/eduardocereto/pyboleto",
     packages=find_packages(),
-    package_data={"": ["LICENSE"], "pyboleto": ["media/*.jpg", "templates/*.html"],},
+    package_data={"": ["LICENSE"], "pyboleto": ["media/*.jpg", "templates/*.html"]},
     zip_safe=False,
     provides=["pyboleto"],
     license="BSD",
