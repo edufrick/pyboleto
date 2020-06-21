@@ -26,13 +26,15 @@
 Useful to early find syntax errors and other common problems.
 
 """
-import _ast
+from __future__ import absolute_import
+
 import sys
 import unittest
 
-from .testutils import SourceTest
-from .compat import skipIf
+import _ast
 
+from .compat import skipIf
+from .testutils import SourceTest
 
 try:
     from pyflakes import checker
@@ -40,11 +42,10 @@ except ImportError as err:
     if sys.version_info >= (3,):
         pass  # Pyflakes doesn't support Python3
     else:
-        raise(err)
+        raise (err)
 
 
-@skipIf(sys.version_info >= (3,),
-        "Pyflakes unavailable on this version")
+@skipIf(sys.version_info >= (3,), "Pyflakes unavailable on this version")
 class TestPyflakes(SourceTest, unittest.TestCase):
     def setUp(self):
         pass
@@ -63,16 +64,14 @@ class TestPyflakes(SourceTest, unittest.TestCase):
                 # Avoid using msg, since for the only known case, it contains a
                 # bogus message that claims the encoding the file declared was
                 # unknown.
-                print >> sys.stderr, "%s: problem decoding source" % (
-                    filename,
-                )
+                print >> sys.stderr, "%s: problem decoding source" % (filename,)
             else:
                 line = text.splitlines()[-1]
 
                 if offset is not None:
                     offset = offset - (len(text) - len(line))
 
-                print >> sys.stderr, '%s:%d: %s' % (filename, lineno, msg)
+                print >> sys.stderr, "%s:%d: %s" % (filename, lineno, msg)
                 print >> sys.stderr, line
 
                 if offset is not None:
@@ -80,7 +79,7 @@ class TestPyflakes(SourceTest, unittest.TestCase):
 
             return 1
         except UnicodeError as msg:
-            print >> sys.stderr, 'encoding error at %r: %s' % (filename, msg)
+            print >> sys.stderr, "encoding error at %r: %s" % (filename, msg)
             return 1
         else:
             # Okay, it's syntactically valid.
@@ -94,7 +93,7 @@ class TestPyflakes(SourceTest, unittest.TestCase):
         msgs = []
         result = 0
         try:
-            fd = open(filename, 'U')
+            fd = open(filename, "U")
             try:
                 result = self._check(fd.read(), filename, warnings)
             finally:
@@ -105,14 +104,14 @@ class TestPyflakes(SourceTest, unittest.TestCase):
 
         warnings.sort(key=lambda w: w.lineno)
         for warning in warnings:
-            msg = str(warning).replace(root, '')
+            msg = str(warning).replace(root, "")
             print msg
             msgs.append(msg)
         if result:
-            raise AssertionError(
-                "%d warnings:\n%s\n" % (len(msgs), '\n'.join(msgs), ))
+            raise AssertionError("%d warnings:\n%s\n" % (len(msgs), "\n".join(msgs),))
+
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestPyflakes)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

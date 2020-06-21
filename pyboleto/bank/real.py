@@ -1,9 +1,10 @@
 # -*- coding: utf-8
+from __future__ import absolute_import
+
 from ..data import BoletoData
 
 
 class BoletoReal(BoletoData):
-
     def __init__(self):
         super(BoletoReal, self).__init__()
 
@@ -18,11 +19,7 @@ class BoletoReal(BoletoData):
 
     @property
     def digitao_cobranca(self):
-        num = "%s%s%s" % (
-            self.nosso_numero,
-            self.agencia_cedente,
-            self.conta_cedente
-        )
+        num = "%s%s%s" % (self.nosso_numero, self.agencia_cedente, self.conta_cedente)
         dv = self.modulo10(num)
         return dv
 
@@ -36,8 +33,10 @@ class BoletoReal(BoletoData):
 
     @property
     def campo_livre(self):
-        content = "%4s%7s%1s%13s" % (self.agencia_cedente,
-                                     self.conta_cedente,
-                                     self.digitao_cobranca,
-                                     self.nosso_numero)
+        content = "%4s%7s%1s%13s" % (
+            self.agencia_cedente,
+            self.conta_cedente,
+            self.digitao_cobranca,
+            self.nosso_numero,
+        )
         return content

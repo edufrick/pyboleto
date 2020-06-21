@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-from ..data import BoletoData, custom_property
+from __future__ import absolute_import
 
-'''
+from ..data import BoletoData
+from ..data import custom_property
+
+
+"""
 /*
 #################################################
 - Convenio de 4 digitos
@@ -16,25 +20,25 @@ from ..data import BoletoData, custom_property
   Nosso número: pode ser até 9 dígitos
 #################################################
 */
-'''
+"""
 
 
 class BoletoBB(BoletoData):
-    '''
+    """
         Gera Dados necessários para criação de boleto para o Banco do Brasil
-    '''
+    """
 
-    agencia_cedente = custom_property('agencia_cedente', 4)
-    conta_cedente = custom_property('conta_cedente', 8)
+    agencia_cedente = custom_property("agencia_cedente", 4)
+    conta_cedente = custom_property("conta_cedente", 8)
 
     def __init__(self, format_convenio=7, format_nnumero=None):
-        '''
+        """
             Construtor para boleto do Banco deo Brasil
 
             Args:
                 format_convenio Formato do convenio 4, 6, 7 ou 8
                 format_nnumero Formato nosso numero 1 ou 2 (apenas para convenio 6)
-        '''
+        """
         super(BoletoBB, self).__init__()
 
         self.codigo_banco = "001"
@@ -52,16 +56,9 @@ class BoletoBB(BoletoData):
 
     def format_nosso_numero(self):
         if self.format_convenio == 7:
-            return "%7s%10s" % (
-                self.convenio,
-                self.nosso_numero
-            )
+            return "%7s%10s" % (self.convenio, self.nosso_numero)
         else:
-            return "%s%s-%s" % (
-                self.convenio,
-                self.nosso_numero,
-                self.dv_nosso_numero
-            )
+            return "%s%s-%s" % (self.convenio, self.nosso_numero, self.dv_nosso_numero)
 
     # Nosso numero (sem dv) sao 11 digitos
     def _get_nosso_numero(self):
@@ -88,7 +85,8 @@ class BoletoBB(BoletoData):
         return self._convenio
 
     def _set_convenio(self, val):
-        self._convenio = str(val).ljust(self.format_convenio, '0')
+        self._convenio = str(val).ljust(self.format_convenio, "0")
+
     convenio = property(_get_convenio, _set_convenio)
 
     @property
@@ -97,14 +95,14 @@ class BoletoBB(BoletoData):
             self.agencia_cedente,
             self.modulo11(self.agencia_cedente),
             self.conta_cedente[:-1],
-            self.conta_cedente[-1:]
+            self.conta_cedente[-1:],
         )
 
     @property
     def dv_nosso_numero(self):
-        '''
+        """
             This function uses a modified version of modulo11
-        '''
+        """
         num = self.convenio + self.nosso_numero
         base = 2
         fator = 9
@@ -116,31 +114,34 @@ class BoletoBB(BoletoData):
             fator -= 1
         r = soma % 11
         if r == 10:
-            return 'X'
+            return "X"
         return r
 
     @property
     def campo_livre(self):
         if self.format_convenio == 4:
-                content = "%s%s%s%s%s" % (self.convenio,
-                                           self.nosso_numero,
-                                           self.agencia_cedente,
-                                           self.conta_cedente,
-                                           self.carteira)
+            content = "%s%s%s%s%s" % (
+                self.convenio,
+                self.nosso_numero,
+                self.agencia_cedente,
+                self.conta_cedente,
+                self.carteira,
+            )
         elif self.format_convenio in (7, 8):
-            content = "000000%s%s%s" % (self.convenio,
-                                         self.nosso_numero,
-                                         self.carteira)
+            content = "000000%s%s%s" % (self.convenio, self.nosso_numero, self.carteira)
         elif self.format_convenio == 6:
             if self.format_nnumero == 1:
-                content = "%s%s%s%s%s" % (self.convenio,
-                                           self.nosso_numero,
-                                           self.agencia_cedente,
-                                           self.conta_cedente,
-                                           self.carteira)
+                content = "%s%s%s%s%s" % (
+                    self.convenio,
+                    self.nosso_numero,
+                    self.agencia_cedente,
+                    self.conta_cedente,
+                    self.carteira,
+                )
             if self.format_nnumero == 2:
-                content = "%s%s%s" % (self.convenio,
-                                        self.nosso_numero,
-                                        '21'  # numero do serviço
-                                        )
+                content = "%s%s%s" % (
+                    self.convenio,
+                    self.nosso_numero,
+                    "21",  # numero do serviço
+                )
         return content

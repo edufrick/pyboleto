@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from ..data import BoletoException
+
 BANCOS_IMPLEMENTADOS = {
-    '001': 'bancodobrasil.BoletoBB',
-    '041': 'banrisul.BoletoBanrisul',
-    '237': 'bradesco.BoletoBradesco',
-    '104': 'caixa.BoletoCaixa',
-    '399': 'hsbc.BoletoHsbc',
-    '341': 'itau.BoletoItau',
-    '356': 'real.BoletoReal',
-    '033': 'santander.BoletoSantander',
-    '748': 'sicredi.BoletoSicredi',
+    "001": "bancodobrasil.BoletoBB",
+    "041": "banrisul.BoletoBanrisul",
+    "237": "bradesco.BoletoBradesco",
+    "104": "caixa.BoletoCaixa",
+    "399": "hsbc.BoletoHsbc",
+    "341": "itau.BoletoItau",
+    "356": "real.BoletoReal",
+    "033": "santander.BoletoSantander",
+    "748": "sicredi.BoletoSicredi",
 }
 
 
@@ -22,11 +25,10 @@ def get_class_for_codigo(banco_codigo):
     :rtype: :class:`pyboleto.data.BoletoData`
     """
     try:
-        banco = BANCOS_IMPLEMENTADOS[banco_codigo].split('.')
+        banco = BANCOS_IMPLEMENTADOS[banco_codigo].split(".")
     except KeyError:
-        raise(BoletoException('Este banco não é suportado.'))
+        raise (BoletoException("Este banco não é suportado."))
 
-    mod = __import__('pyboleto.bank.' + banco[0],
-                     globals(), locals(), [banco[1]])
+    mod = __import__("pyboleto.bank." + banco[0], globals(), locals(), [banco[1]])
 
     return getattr(mod, banco[1])
